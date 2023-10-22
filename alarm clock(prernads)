@@ -1,0 +1,28 @@
+import time
+import winsound
+
+def set_alarm():
+    alarm_time = input("Enter the time for the alarm in HH:MM format: ")
+    try:
+        alarm_hour, alarm_minute = map(int, alarm_time.split(':'))
+        if 0 <= alarm_hour < 24 and 0 <= alarm_minute < 60:
+            return alarm_hour, alarm_minute
+        else:
+            print("Invalid time format. Please use HH:MM format.")
+            return set_alarm()
+    except ValueError:
+        print("Invalid time format. Please use HH:MM format.")
+        return set_alarm()
+
+def wait_for_alarm(alarm_hour, alarm_minute):
+    while True:
+        current_time = time.localtime()
+        if current_time.tm_hour == alarm_hour and current_time.tm_min == alarm_minute:
+            print("Time to wake up!")
+            for _ in range(3):  # Beep the alarm 3 times
+                winsound.Beep(1000, 1000)  # Beep at 1000 Hz for 1 second
+            break
+        time.sleep(60)  # Check the time every minute
+if __name__ == "__main__":
+    alarm_hour, alarm_minute = set_alarm()
+    wait_for_alarm(alarm_hour, alarm_minute)
